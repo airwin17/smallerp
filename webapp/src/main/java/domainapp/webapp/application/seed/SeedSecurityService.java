@@ -16,22 +16,22 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @Priority(PriorityPrecedence.MIDPOINT + 10)
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class SeedSecurityService {
 
-    private final FixtureScripts fixtureScripts;
     private final TransactionService transactionService;
     private final CausewaySystemEnvironment causewaySystemEnvironment;
+    public  SeedSecurityService(FixtureScripts fixtureScripts,TransactionService transactionService, CausewaySystemEnvironment causewaySystemEnvironment) {
+        this.transactionService = transactionService;
+        this.causewaySystemEnvironment = causewaySystemEnvironment;
+    }
 
     @EventListener(MetamodelEvent.class)
     public void onMetamodelEvent(final MetamodelEvent event) {
         if (event.isPostMetamodel() && causewaySystemEnvironment.isPrototyping()) {
-            runScripts();
+
             transactionService.flushTransaction();
         }
     }
 
-    private void runScripts() {
-        fixtureScripts.run(new CustomRolesAndUsers());
-    }
+
 }

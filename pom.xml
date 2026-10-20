@@ -12,7 +12,6 @@
 
     <artifactId>simpleapp-jpa</artifactId>
     <groupId>org.apache.causeway.starters</groupId>
-    <version>3.6.0</version>
 
     <name>SimpleApp (JPA) - Parent</name>
 
@@ -30,18 +29,6 @@
         <dependencies>
 
             <!-- this project's own modules -->
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>simpleapp-jpa-module-simple</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>simpleapp-jpa-module-simple-tests</artifactId>
-                <version>${project.version}</version>
-                <scope>test</scope>
-                <type>test-jar</type>
-            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>simpleapp-jpa-webapp</artifactId>
@@ -73,15 +60,18 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <modules>
-        <module>module-simple</module>
-        <module>module-simple-tests</module>
         <module>webapp</module>
-        <module>webapp-tests</module>
+        <module>sale</module>
+        <module>product</module>
+        <module>stock</module>
+        <module>base</module>
+        <module>account</module>
     </modules>
 
     <profiles>
@@ -114,4 +104,22 @@
             </repositories>
         </profile>
     </profiles>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>21</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.36</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

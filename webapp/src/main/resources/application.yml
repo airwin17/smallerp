@@ -4,12 +4,11 @@
 # See also config/application.properties
 #
 causeway:
-
   applib:
     annotation:
       action:
-        command-publishing: all
-        execution-publishing: all
+        command-publishing: none
+        execution-publishing: none
       action-layout:
         css-class:
           patterns:
@@ -17,11 +16,11 @@ causeway:
             discard.*:btn-warning,
             remove.*:btn-warning
       property:
-        command-publishing: all
-        execution-publishing: all
+        command-publishing: none
+        execution-publishing: none
       domain-object:
         editing: false
-        entity-change-publishing: all
+        entity-change-publishing: none
   core:
     meta-model:
       introspector:
@@ -35,20 +34,6 @@ causeway:
         po:
           mode: disabled
 
-  extensions:
-    secman:
-      seed:
-        admin:
-          user-name: "secman-admin"
-          password: "pass"
-          role-name: "causeway-ext-secman-admin"
-          namespace-permissions:
-            sticky: "simple"
-#            additional: ...
-        regular-user:
-          role-name: "causeway-ext-secman-user"
-      permissions-evaluation-policy: allow_beats_veto
-      user-menu-me-action-policy: hide
   viewer:
     common:
       application:
@@ -56,7 +41,7 @@ causeway:
         brand-logo-signin: images/apache-causeway/logo-banner-591x120.png
         brand-logo-header: images/apache-causeway/logo-65x48.png
         favicon-url: images/favicon.png
-        menubars-layout-file: menubars.layout.xml
+        # menubars-layout-file: menubars.layout.xml
         name: Simple App
         # https://stackoverflow.com/a/38983935/56880
         version: ^project.version^
@@ -99,6 +84,9 @@ causeway:
           data-tables-net:
             options: "info: false, pagingType: 'numbers'"
     graphql:
+      introspection:
+        goodfaith:
+          enabled: false
       api-variant: query_with_mutations_non_spec_compliant
       authentication:
         fallback:
@@ -107,6 +95,11 @@ causeway:
             - simple-superuser
             - foo
             - bar
+    restfulobjects:
+      base-path: /restful
+      authentication:
+        strategy-class-name: domainapp.webapp.NoAuthAuthenticationStrategy
+
 
   testing:
     fixtures:
@@ -119,25 +112,31 @@ causeway:
   value-types:
     big-decimal:
       allow-grouping-separator-when-parse: false
+  persistence:
+    schema:
+      auto-create-schemas: [product, base]
+    weaving:
+      safeguard-mode: require_weaved_when_any_sub_is_weaved
 
 eclipselink:
-  # if enabled, then must be run with JVM arg:
-  # -javaagent:lib/spring-instrument-5.3.8.jar
-  weaving: false
+  ddl-generation: drop-and-create-tables
+  ddl-generation.output-mode: database
+  weaving: true
   # if weaving subproperties are required, then specify all eclipselink.weaving
   # properties using application.properties instead (it's not possible to
   # specify both eclipselink.weaving property and its subproperties using yaml syntax)
 
-resteasy:
-  jaxrs:
-    app:
-      registration: beans
-    defaultPath: "/restful"
 
 server:
   max-http-header-size: 16KB
 
 spring:
+  jpa:
+    properties:
+      eclipselink:
+        ddl-generation: drop-and-create-tables
+        ddl-generation.output-mode: database
+
   banner:
     location: banner.txt
   quartz:
@@ -209,3 +208,8 @@ management:
           - health
       discovery:
         enabled: false
+resteasy:
+  jaxrs:
+    app:
+      registration: manual
+    scan: true

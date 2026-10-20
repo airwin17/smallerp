@@ -81,12 +81,6 @@
     </build>
 
     <dependencies>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>simpleapp-jpa-module-simple</artifactId>
-        </dependency>
-
         <!-- causeway -->
         <dependency>
             <groupId>org.apache.causeway.mavendeps</groupId>
@@ -153,21 +147,20 @@
 
         <dependency>
             <groupId>org.apache.causeway.extensions</groupId>
-            <artifactId>causeway-extensions-secman-encryption-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.causeway.extensions</groupId>
-            <artifactId>causeway-extensions-secman-persistence-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.causeway.extensions</groupId>
             <artifactId>causeway-extensions-sessionlog-persistence-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.causeway.viewer</groupId>
+            <artifactId>causeway-viewer-restfulobjects-jaxrsresteasy</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.apache.causeway.extensions</groupId>
             <artifactId>causeway-extensions-audittrail-persistence-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.causeway.viewer</groupId>
+            <artifactId>causeway-viewer-restfulobjects-viewer</artifactId>
         </dependency>
 
         <dependency>
@@ -194,10 +187,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator-autoconfigure</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.causeway.security</groupId>
+            <artifactId>causeway-security-bypass</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <dependency>
@@ -228,6 +229,18 @@
         <dependency>
             <groupId>com.github.vertical-blank</groupId>
             <artifactId>sql-formatter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.causeway.starters</groupId>
+            <artifactId>product</artifactId>
+            <version>3.6.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.causeway.starters</groupId>
+            <artifactId>stock</artifactId>
+            <version>3.6.0</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
