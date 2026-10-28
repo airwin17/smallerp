@@ -1,200 +1,58 @@
-= SimpleApp
-:toc:
-:toc-placement!:
+# Apache Causeway TinyERP-style Shop ERP
 
-This is a simple link:https://causeway.apache.org[Apache Causeway] application, structured so that it can be used as a starting point for developing your own applications.
+A modular, scalable small-shop ERP system built on **Apache Causeway 3.6.0** (the classic thin-kernel approach, not modern Odoo).
 
-It consists of:
+**Goal**: A backend-driven single-page Vue.js frontend that discovers everything dynamically from the Causeway REST API (no hard-coded domain classes or pages).
 
-* a single module, which you can refactor for your own domain, or take a copy of in order to ensure that your application is properly modular
-* configuration to bring in some of the more commonly used extensions: secman, command log, audit trail, execution log, session logger, flyway,quartz and excel download.
+## Technology Stack
 
-You can easily remove these extensions (or add others) in the `AppManifest`.
+- **Backend**: Apache Causeway 3.6.0 + Spring Boot 3.5.x + JPA/EclipseLink + PostgreSQL (dev = H2)
+- **Modules**: base / product / sale / stock / account (composed via mixins)
+- **Security**: Spring Security + Causeway bypass modules (AuthorizorBypass / AuthenticatorBypass) for development
+- **Database**: H2 in-memory (drop-and-create-tables for dev)
+- **Frontend**: Vue.js 3 + PrimeVue + TypeScript (separate repository)
+- **Build**: Maven (webapp module)
+- **Java**: 21 (must be set via JAVA_HOME/SDKMAN)
 
-[TIP]
-====
-If all you want is get a feel for what the framework is all about, then take a look at the link:https://github.com/apache/causeway-app-helloworld[HelloWorld] starter app, which has the bare minimum of configuration.
-====
+## Project Architecture
 
-toc::[]
+- **Multi-module Maven** (parent `causeway-app-simpleapp`)
+  - `base` – core domain (Partner, User, etc.)
+  - `product` – Product, ProductTemplate, ProductCategory
+  - `sale` – SaleOrder + lines
+  - `stock` – StockLocation, Picking, Move
+  - `account` – planned
+- **Domain services** live in packages annotated with `@DomainService`
+- **RESTful Objects** viewer (`/restful/*`) is the single source of truth
+- **Vue.js frontend** (separate repo) consumes the REST API dynamically:
+  - List all `@DomainService` actions for the header nav menu
+  - Generic object page that loads any object by type+id
+  - Dynamic buttons, data tables, toasts, navigation
 
-== Quick start
+## How the Frontend Works (Backend-Driven)
 
-* install prereqs:
+1. Vue.js fetches the REST schema and available modules from (`/restful/swagger/private`)
+2. It discovers every `@DomainService` action and object
+3. The PrimeVue header is built automatically from the REST menuBars endpoint
+4. When you click a service or object, the app loads the object via GraphQL-like REST and renders properties/actions dynamically
+5. All UI layout (buttons, layouts, actions) comes from Causeway annotations(`@ActionLayout`, `@Action`, `@DomainServiceLayout`, etc.)
 
-** Java 21 LTS (eg link:https://adoptopenjdk.net/[Adopt OpenJDK] distribution)
-** Maven 3.9.11 or later (http://maven.apache.org/download.cgi[download])
-* download and unzip
-+
-[source,bash]
-----
-APP=simpleapp
-BRANCH=master
+No Wicket UI is served to the end user. The original Wicket viewer remains in the codebase for development/debugging only.
 
-REPO=causeway-app-$APP
-curl "https://codeload.github.com/apache/$REPO/zip/$BRANCH" | jar xv
-mv $REPO-$BRANCH $REPO
-cd $REPO
-----
+## Getting Started
+### before contributing :
+- use the default wicket ui and read the official [apache causeway docs](https://causeway.apache.org/) to learn about the interaction
+- read the issues section and let the current maintainer @airwin17 knew that you work on the issue(task) to be assigned in
+- PR  from unassigned author on assigned task are refused to avoid duplicate work
+- naver use explicite bipolar controller with @GetMapping use @Action instead
 
-* Build using Maven:
-+
-[source,bash]
-----
+### Prerequisites
+- Java 21 (`JAVA_HOME` to Java 21)
+- Maven 3.9+
+- PostgreSQL or H2
+- Node.js 20+ (for the separate Vue frontend)
+
+### Backend
+```bash
 mvn clean install
-----
-
-* Run using Maven:
-+
-[source,bash]
-----
 mvn -pl webapp spring-boot:run
-----
-
-* Browse to http://localhost:8080.
-
-* Login using:
-
-** either the secman superuser:
-
-*** username: `secman-admin`
-*** password: `pass`
-
-** or as a regular user:
-
-*** username: `sven`
-*** password: `pass`
-
-+
-The app runs with H2 running in-memory, with sample data set up using fixture scripts.
-
-* Build a Docker image
-+
-[source,bash]
-----
-export REVISION=...                 #<.>
-export DOCKER_REGISTRY_USERNAME     #<.>
-export DOCKER_REGISTRY_PASSWORD     #<.>
-
-mvn -pl webapp -Ddocker jib:build
-----
-<.> used as the image tag
-<.> Docker Hub registry username
-<.> Docker Hub registry password
-+
-To push to another container registry, change the `<image>` tag in the pom.xml
-
-== Application Structure
-
-The following table explains the contents of each of the directories:
-
-[width="100%",options="header,footer",stripes="none",cols="2a,4a"]
-|====================
-|Directory
-|Description
-
-|`module-simple`
-|Holds the "simple" module, consisting of the `SimpleObject` entity and supporting services.
-
-[TIP]
-====
-Larger applications should consist of multiple modules; each such module can be copied from this starter module.
-====
-
-|`module-simple-tests`
-|Holds the unit- and integration tests for `module-simple`.
-
-
-|`webapp`
-|Holds the bootstrapping classes, along with application-level scoped services and home page.
-
-The `pom.xml` also provides goals to run the app from the command line, or to be assembled into a Docker image.
-
-|`webapp-tests`
-|Contains application-wide integration tests.
-
-|====================
-
-It's more common for tests to reside within the same module, but we moved them into their own Maven modules because it makes them easier to be temporarily excluded, eg during initial explorations/prototyping.
-
-
-
-== Testing
-
-The application has both unit tests and integration tests.
-
-.Testing types
-[cols="5a,12a,6a,3a", options="header"]
-|===
-
-| Test type
-| Report
-| Phase
-| Skip using
-
-| Unit test
-| `target/surefire-unittest-reports`
-| `test`
-| `-DskipUTs`
-
-| Integ test
-| `target/surefire-integtest-reports`
-| `integration-test`
-| `-DskipITs`
-
-
-|===
-
-
-These outputs can for example be processed within/published by a continuous pipeline.
-
-
-
-== Translations
-
-Apache Causeway supports i18n using link:https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html[GNU .po file]s.
-The `WEB-INF/translations.po` is the fallback (an empty value means that the key is used "as-is"), while `WEB-INF/translations-XX.po` files provide translations for each "XX" locale.
-
-Translations are required for all domain classes and all members (actions, properties and collections) of all classes.
-This information is available from the metamodel, and so a new template `translations.po` is generated as a side effect of running the integration tests (through a log4j2 logger).
-A good integration test to run is `ValidateDomainModel_IntegTest`.
-
-In addition, translations are required for any validation messages triggered by the test.
-Running an integration tests that trigger validations will result in these messages being captured as keys, for example `Smoke_IntegTest`.
-
-The generated file should be merged with any existing translations in `WEB-INF/translations.po`, and translations obtained for any new keys (there are numerous online services that support the format).
-
-
-== Flyway
-
-The application also demonstrates how to use Flyway to migrate the database schema.
-
-By default the app runs using an in-memory database.
-The Flyway example is activated using the "SQLSERVER" Spring Boot profile, eg:
-
-[source,bash]
-----
-mvn -Dspring.profiles.active=SQLSERVER -pl webapp install
-mvn -Dspring.profiles.active=SQLSERVER -pl webapp spring-boot:run
-----
-
-This causes the properties defined in  `config/application-SQLSERVER.properties` file to be used in preference to those in the default `config/application.properties` file.
-It defines the following:
-
-* `spring.flyway.url`, `spring.flyway.user` and `spring.flyway.password`
-+
-The presence of these is enough to enable the Flyway integration
-
-* `spring.flyway.enabled`
-+
-This is explicitly set to `true`, to override the value in the default `config/application.properties`.
-
-* `causeway.persistence.jdo-datanucleus.impl.datanucleus.schema.autoCreateAll`
-+
-This is set to `false`, also overriding the value in the default `config/application.properties`.
-It instructs the JDO/DataNucleus object store not to automatically create any tables etc.
-
-The Spring Boot profile is also used to add the dependency to the SQL Server driver is included (it is hidden behind a Maven profile).
-
-The prerequisites to try this out are a SQL Server database running on `localhost` and with the credentials as specified in `config/application-SQLSERVER.properties`; adjust as necessary.
-
