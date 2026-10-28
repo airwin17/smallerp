@@ -9,15 +9,20 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Component("noAuthAuthenticationStrategy")
 public class NoAuthAuthenticationStrategy implements AuthenticationStrategy {
 
     @Override
-    public InteractionContext lookupValid(HttpServletRequest request, HttpServletResponse response) {
+    public InteractionContext lookupValid(
+            final HttpServletRequest request,
+            final HttpServletResponse response) {
+
         return InteractionContext.ofUserWithSystemDefaults(
-                UserMemento.ofNameAndRoleNames("dev", "causeway-ext-secman-user")
+                UserMemento.ofName("dev")
+                        .withRoleAdded("admin_role") // Use standard app roles if any
         );
     }
+
 
     @Override
     public void bind(HttpServletRequest request, HttpServletResponse response, InteractionContext auth) {

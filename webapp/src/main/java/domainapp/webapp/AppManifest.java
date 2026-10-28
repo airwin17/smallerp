@@ -9,10 +9,13 @@ import org.apache.causeway.extensions.fullcalendar.wkt.ui.viewer.CausewayModuleE
 import org.apache.causeway.extensions.layoutloaders.github.CausewayModuleExtLayoutLoadersGithub;
 
 
+import org.apache.causeway.security.bypass.CausewayModuleSecurityBypass;
 import org.apache.causeway.security.bypass.authentication.AuthenticatorBypass;
 import org.apache.causeway.security.bypass.authorization.AuthorizorBypass;
 
+import org.apache.causeway.security.spring.CausewayModuleSecuritySpring;
 import org.apache.causeway.viewer.restfulobjects.jaxrsresteasy.CausewayModuleViewerRestfulObjectsJaxrsResteasy;
+
 import org.apache.causeway.viewer.restfulobjects.viewer.CausewayModuleViewerRestfulObjectsViewer;
 
 import org.springframework.context.annotation.Configuration;
@@ -43,18 +46,18 @@ import domainapp.webapp.custom.CustomModule;
         CausewayModuleApplibMixins.class,
         CausewayModuleCoreMetamodelMixins.class,
         CausewayModuleViewerWicketApplibMixins.class,
-        CausewayModuleViewerRestfulObjectsJaxrsResteasy.class,
 
         //CausewayModuleApplibChangeAndExecutionLoggers.class,
 
         CausewayModuleCoreRuntimeServices.class,
         CausewayModulePersistenceJpaEclipselink.class,
-        CausewayModuleViewerRestfulObjectsViewer.class,
         CausewayModuleViewerWicketViewer.class,
         CausewayModuleViewerWicketViewer.class,
 
         CausewayModuleTestingFixturesApplib.class,
         CausewayModuleTestingH2ConsoleUi.class,
+        CausewayModuleViewerRestfulObjectsJaxrsResteasy.class,
+        CausewayModuleViewerRestfulObjectsViewer.class,
 
         CausewayModuleExtFlywayImpl.class,
 
@@ -74,10 +77,9 @@ import domainapp.webapp.custom.CustomModule;
         CausewayModuleValAsciidocUiWkt.class,
         AuthorizorBypass.class,
         AuthenticatorBypass.class,
-        //SecurityConfig.class,
+        CausewayModuleSecuritySpring.class,
 
         ApplicationModule.class,
-        CustomModule.class,
         ProductApplication.class,
         //SaleApplication.class,
         //StockApplication.class,

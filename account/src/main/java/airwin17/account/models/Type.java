@@ -1,0 +1,17 @@
+package airwin17.account.models;
+
+public enum Type {
+    ACCOUNT_VIEW,
+    ACCOUNT_RECEIVABLE,
+    ACCOUNT_PAYABLE,
+    ACCOUNT_INCOME,
+    ACCOUNT_EXPENSE,
+    ACCOUNT_CASH,
+    ACCOUNT_TAX,
+    JOURNAL_SALE,
+    JOURNAL_CASH,
+    JOURNAL_GENERAL,
+    INVOICE_IN,
+    INVOICE_OUT,
+    INVOICE_OUT_REFOUND,
+}
