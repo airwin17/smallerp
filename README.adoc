@@ -1,6 +1,6 @@
-# Apache Causeway TinyERP-style Shop ERP
+# Apache Causeway small ERP system
 
-A modular, scalable small-shop ERP system built on **Apache Causeway 3.6.0** (the classic thin-kernel approach, not modern Odoo).
+A modular, scalable small ERP system built on **Apache Causeway 3.6.0** (the classic thin-kernel approach, not modern Odoo).
 
 **Goal**: A backend-driven single-page Vue.js frontend that discovers everything dynamically from the Causeway REST API (no hard-coded domain classes or pages).
 
