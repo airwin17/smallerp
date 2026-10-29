@@ -36,12 +36,26 @@ public class MetaModelController {
         this.metaModelService = metaModelService;
         this.serviceRegistry = serviceRegistry;
     }
-    @GetMapping("/services/{domaineServiceName}")
+    @GetMapping({"/services/{domaineServiceName}", "/objects/{domaineServiceName}"})
     public ResponseEntity<ObjectNode> getServices(@PathVariable String domaineServiceName) throws JsonProcessingException {
-        ObjectNode objectNode = new ObjectNode(JsonNodeFactory.instance);
         Annotation[] annotations = getClassByName(domaineServiceName).getAnnotations();
-        ObjectMapper mapper = new ObjectMapper();
+        return ResponseEntity.ok(toObjectNode(annotations));
+    }
 
+    @GetMapping({"/services/{domaineServiceName}/actions/{actionName}/invoke","/objects/{domaineServiceName}/actions/{actionName}/invoke"})
+    public ResponseEntity<ObjectNode> getClasses(@PathVariable String domaineServiceName,@PathVariable String actionName) throws NoSuchMethodException {
+        Annotation[] annotations = getClassByName(domaineServiceName).getMethod(actionName).getAnnotations();
+        return ResponseEntity.ok(toObjectNode(annotations));
+    }
+    private Class<?> getClassByName(String domaineServiceName) throws IllegalArgumentException{
+        return (metaModelService.lookupLogicalTypeByName(domaineServiceName)
+                .map(LogicalType::correspondingClass)
+                .orElseThrow(() -> new IllegalArgumentException("No domain service found for name: " + domaineServiceName)));
+
+    }
+    private ObjectNode toObjectNode(Annotation[] annotations) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode objectNode = mapper.createObjectNode();
         for (Annotation annotation : annotations) {
             Map<String, Object> annotationValues = new LinkedHashMap<>();
             for (Method method : annotation.annotationType().getDeclaredMethods()) {
@@ -58,20 +72,6 @@ public class MetaModelController {
             }
             objectNode.set(annotation.annotationType().getSimpleName(), mapper.valueToTree(annotationValues));
         }
-
-
-        return ResponseEntity.ok(objectNode);
-    }
-
-    @GetMapping("/services/{domaineServiceName}/actions/{actionName}/invoke")
-    public ResponseEntity<ObjectNode> getClasses(@PathVariable String domaineServiceName) {
-
-        return ResponseEntity.ok().build();
-    }
-    private Class<?> getClassByName(String domaineServiceName) throws IllegalArgumentException{
-        return (metaModelService.lookupLogicalTypeByName(domaineServiceName)
-                .map(LogicalType::correspondingClass)
-                .orElseThrow(() -> new IllegalArgumentException("No domain service found for name: " + domaineServiceName)));
-
+        return objectNode;
     }
 }
