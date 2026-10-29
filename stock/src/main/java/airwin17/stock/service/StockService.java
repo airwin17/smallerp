@@ -1,5 +1,6 @@
 package airwin17.stock.service;
 
+import main.Services.UomService;
 import airwin17.sale.event.OrderSaleConfirmEvent;
 import airwin17.sale.models.SaleOrder;
 import airwin17.sale.models.SaleOrderLine;
@@ -9,12 +10,14 @@ import airwin17.stock.models.StockMove;
 import airwin17.stock.models.Usage;
 import airwin17.stock.repositories.StockLocationRepository;
 import airwin17.stock.repositories.StockMoveRepository;
-import base.Services.UomService;
-import base.models.Product;
-import base.models.Uom;
+
 import jakarta.inject.Inject;
 
 import lombok.RequiredArgsConstructor;
+
+import main.models.Product;
+
+import main.models.Uom;
 
 import org.apache.causeway.applib.events.domain.AbstractDomainEvent;
 

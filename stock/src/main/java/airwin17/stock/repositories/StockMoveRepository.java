@@ -5,8 +5,8 @@ import airwin17.stock.models.StockMove;
 
 import airwin17.stock.models.Usage;
 
-import base.models.Product;
-import jakarta.validation.constraints.NotNull;
+
+import main.models.Product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -2,7 +2,7 @@ package airwin17.sale.models;
 
 import airwin17.sale.event.OrderSaleConfirmEvent;
 import airwin17.sale.repositories.SaleOrderLineRepository;
-import base.models.Partner;
+
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -18,6 +18,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 
 import lombok.Data;
+
+import main.models.Partner;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.DomainObject;

@@ -1,8 +1,6 @@
 package airwin17.sale;
 
-import base.BaseApplication;
 
-import base.ProductApplication;
 
 import org.apache.causeway.core.runtimeservices.CausewayModuleCoreRuntimeServices;
 

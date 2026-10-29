@@ -1,6 +1,6 @@
 package airwin17.stock;
 
-import base.BaseApplication;
+
 
 import org.apache.causeway.core.runtimeservices.CausewayModuleCoreRuntimeServices;
 

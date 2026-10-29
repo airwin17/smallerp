@@ -1,8 +1,5 @@
 package airwin17.sale.models;
 
-import airwin17.sale.repositories.SaleOrderLineRepository;
-import base.models.Product;
-import base.models.Uom;
 import jakarta.inject.Named;
 import jakarta.persistence.Entity;
 
@@ -14,11 +11,14 @@ import jakarta.persistence.ManyToOne;
 
 import lombok.Data;
 
+import main.models.Product;
+
+import main.models.Uom;
+
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.Editing;
 import org.apache.causeway.applib.annotation.Nature;
 import org.apache.causeway.applib.annotation.Property;
-import org.apache.causeway.applib.annotation.Title;
 
 import java.math.BigDecimal;
 

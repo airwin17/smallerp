@@ -1,9 +1,11 @@
 package domainapp.webapp;
 
 import airwin17.stock.StockApplication;
-import base.ProductApplication;
+
 
 import airwin17.sale.SaleApplication;
+
+import main.ProductApplication;
 
 import org.apache.causeway.extensions.fullcalendar.wkt.ui.viewer.CausewayModuleExtFullCalendarWicketUi;
 import org.apache.causeway.extensions.layoutloaders.github.CausewayModuleExtLayoutLoadersGithub;

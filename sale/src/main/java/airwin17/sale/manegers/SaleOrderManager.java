@@ -2,8 +2,7 @@ package airwin17.sale.manegers;
 
 import airwin17.sale.models.SaleOrder;
 import airwin17.sale.repositories.SaleOrderRepository;
-import base.models.Partner;
-import base.models.Product;
+
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 

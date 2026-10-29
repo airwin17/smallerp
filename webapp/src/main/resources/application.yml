@@ -21,7 +21,6 @@ causeway:
       domain-object:
         editing: false
         entity-change-publishing: none
-  core:
     meta-model:
       introspector:
         lock-after-full-introspection: true

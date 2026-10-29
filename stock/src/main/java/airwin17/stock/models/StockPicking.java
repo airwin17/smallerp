@@ -1,8 +1,6 @@
 package airwin17.stock.models;
 
-import base.models.Partner;
-import base.models.Product;
-import base.models.Uom;
+
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.CascadeType;
@@ -11,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.ManyToOne;
@@ -20,6 +17,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 
 import lombok.Data;
+
+import main.models.Partner;
+
+import main.models.Product;
+
+import main.models.Uom;
 
 import org.apache.causeway.applib.annotation.Action;
 import org.apache.causeway.applib.annotation.SemanticsOf;

@@ -1,7 +1,5 @@
 package airwin17.stock.models;
 
-import base.models.Product;
-import base.models.Uom;
 import jakarta.inject.Named;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +13,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 import lombok.Data;
+
+import main.models.Product;
+
+import main.models.Uom;
 
 import org.apache.causeway.applib.annotation.DomainObject;
 import org.apache.causeway.applib.annotation.Nature;
